@@ -8,18 +8,18 @@ from PIL import Image, ImageDraw
 
 def check_face_loc(left_eye,right_eye,nose_tip):
     print(nose_tip.x)
-    if(nose_tip.x < 3280*4/7):
+    if(nose_tip.x < 1024*4/7):
         print("もうちょい右やで")    
-        return -1
-    if(nose_tip.x > 3280*4/7):
+        return "move right"
+    if(nose_tip.x > 1024*4/7):
         print("もうちょい左やで")
-        return -2
-    if(nose_tip.y < 2464*4/7):
+        return "move left"
+    if(nose_tip.y < 768*4/7):
         print("もうちょい下")
-        return -3        
-    if(nose_tip.y > 2464*4/7):
+        return "get back"
+    if(nose_tip.y > 768*4/7):
         print("もうちょい上")
-        return -4
+        return "move forward"
     return 0
 
 def detect_face(face_file, max_results=4):
