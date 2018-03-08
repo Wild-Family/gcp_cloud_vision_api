@@ -35,7 +35,7 @@ def check_face_loc(face_box,left_eye,right_eye,nose_tip):
     #     return "move forward"
     return "ok"
 
-def detect_face(face_file, max_results=4):
+def detect_face(face_file):
     client = vision.ImageAnnotatorClient()
     content = face_file.read()
     image = types.Image(content=content)
@@ -43,18 +43,23 @@ def detect_face(face_file, max_results=4):
 
 
 def highlight_faces(image, faces):
+    im = Image.open(image)
+    draw = ImageDraw.Draw(im)
+    
     for face in faces:
         left_eye =  face.landmarks[0].position
         right_eye = face.landmarks[1].position
         nose_tip =  face.landmarks[7].position
 
         box = [(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices]#(左上、右上、右下、左下)
+        draw.line(box + [box[0]], width=5, fill='#00ff00')
     print(box)
+    im.save("./output.jpg")
     return check_face_loc(box,left_eye,right_eye,nose_tip)
 
-def main(input_filename,max_results):
+def main(input_filename):
     with open(input_filename, 'rb') as image:
-        faces = detect_face(image, max_results)
+        faces = detect_face(image)
         if not faces:
             print("顔を認識できません")
             return "nobody"
@@ -62,5 +67,5 @@ def main(input_filename,max_results):
         return highlight_faces(image, faces)
 
 if __name__ == '__main__':
-    check_face_loc_result = main("img/te.JPG",4)
+    check_face_loc_result = main("img/tes.JPG")
     print(check_face_loc_result)
