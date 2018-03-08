@@ -15,10 +15,10 @@ def check_face_loc(left_eye,right_eye,nose_tip):
         print("もうちょい左やで")
         return "move left"
     if(nose_tip.y < 768*4/7):
-        print("もうちょい下")
+        print("もうちょい下(後ろに下がって)")
         return "get back"
     if(nose_tip.y > 768*4/7):
-        print("もうちょい上")
+        print("もうちょい上(前に出て)")
         return "move forward"
     return 0
 
