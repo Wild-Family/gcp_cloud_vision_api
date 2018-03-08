@@ -57,10 +57,9 @@ def main(input_filename,max_results):
         faces = detect_face(image, max_results)
         if not faces:
             print("顔を認識できません")
-            return "error"
+            return "nobody"
         image.seek(0)
         return highlight_faces(image, faces)
-
 
 if __name__ == '__main__':
     check_face_loc_result = main("img/te.JPG",4)
