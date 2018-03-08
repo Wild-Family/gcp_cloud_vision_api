@@ -6,11 +6,11 @@ from google.cloud.vision import types
 from PIL import Image, ImageDraw
 
 
-#TODO face_boxを連想配列
+#TODO face_boxを連想配列にする
 def check_face_loc(face_box,left_eye,right_eye,nose_tip):
     if((face_box[0][0]-face_box[1][0])*(face_box[1][1]-face_box[2][1]) < 200 * 200):#ここ調整
         print("もう少し近づいて")
-        return "move forward"
+        return "forward"
     if(face_box[0][0] > 1024*1/2):
         return "right" #被写体は右に
     if(face_box[1][0] < 1024*1/2):
@@ -19,7 +19,6 @@ def check_face_loc(face_box,left_eye,right_eye,nose_tip):
         return "forward" #顔はもう少し上に
     if(face_box[3][1] < 768*1/2):
         return "back" #顔はもう少し下に
-    
     
     # print(nose_tip.x)
     # if(nose_tip.x < 1024*4/7):
@@ -50,25 +49,19 @@ def highlight_faces(image, faces):
         nose_tip =  face.landmarks[7].position
 
         box = [(vertex.x, vertex.y) for vertex in face.bounding_poly.vertices]#(左上、右上、右下、左下)
-        #print(faces)
-        #print(face.landmarks[0].position)#左目
-        #print(face.landmarks[1].position)#右目
-    #print(left_eye)
-    #print(right_eye)
-    #print(nose_tip)
     print(box)
-    
-
     return check_face_loc(box,left_eye,right_eye,nose_tip)
 
 def main(input_filename,max_results):
     with open(input_filename, 'rb') as image:
         faces = detect_face(image, max_results)
+        if not faces:
+            print("顔を認識できません")
+            return "error"
         image.seek(0)
         return highlight_faces(image, faces)
 
 
 if __name__ == '__main__':
-    check_face_loc_result = main("img/tes.JPG",4)
+    check_face_loc_result = main("img/te.JPG",4)
     print(check_face_loc_result)
-
