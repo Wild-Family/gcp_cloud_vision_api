@@ -20,7 +20,7 @@ def check_face_loc(left_eye,right_eye,nose_tip):
     if(nose_tip.y > 768*4/7):
         print("もうちょい上(前に出て)")
         return "move forward"
-    return 0
+    return "ok"
 
 def detect_face(face_file, max_results=4):
     client = vision.ImageAnnotatorClient()
